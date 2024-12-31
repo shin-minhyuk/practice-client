@@ -9,7 +9,7 @@ export default function Home() {
   useEffect(() => {
     setTimeout(() => {
       router.push("/login");
-    }, 6000);
+    }, 7000);
   }, [router]);
 
   return (

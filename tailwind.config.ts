@@ -8,9 +8,8 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+      boxShadow: {
+        custom: "0 4px 6px rgba(0, 0, 0, 0.1)", // 사용자 정의 그림자
       },
     },
   },
