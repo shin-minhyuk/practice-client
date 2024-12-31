@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface FormData {
   email: string;
@@ -15,11 +15,13 @@ export default function Login() {
     setValue,
   } = useForm<FormData>();
 
+  const errorClassName = 'text-red-500 text-sm';
+
   const handleLogin: SubmitHandler<FormData> = async (data: FormData) => {
-    const response = await fetch("/login", {
-      method: "POST",
+    const response = await fetch('http://localhost:3010/login', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     });
@@ -28,42 +30,47 @@ export default function Login() {
       const { message } = await response.json();
       alert(message);
     } else {
-      setValue("email", "");
-      setValue("password", "");
+      setValue('email', '');
+      setValue('password', '');
     }
   };
 
   return (
-    <div className='w-full min-h-screen flex justify-center items-center'>
-      <div className='flex'>
+    <div className='flex min-h-screen w-full items-center justify-center'>
+      <div className='flex items-center'>
         <form
           onSubmit={handleSubmit(handleLogin)}
-          className='w-[600px] mx-auto bg-white shadow-custom z-10 relative left-5'
+          className='relative left-5 z-10 mx-auto w-[600px] bg-white p-4 shadow-custom'
         >
-          <div className='w-full flex flex-col p-4'>
+          <h2 className='text-[20px]'>Login please</h2>
+
+          <div className='flex w-full flex-col'>
             <input
               type='email'
-              {...register("email", { required: "이메일은 필수 항목입니다." })}
-              placeholder='이메일을 입력해주세요.'
+              {...register('email', { required: '이메일은 필수 항목입니다' })}
+              placeholder='Input your user ID or Email'
+              className=''
             />
-            {errors.email && <p>{errors.email.message}</p>}
+            {errors.email && <p className={errorClassName}>{errors.email.message}</p>}
 
             <input
               type='password'
-              {...register("password", { required: "비밀번호는 필수 항목입니다." })}
-              placeholder='비밀번호를 입력해주세요.'
+              {...register('password', { required: '비밀번호는 필수 항목입니다' })}
+              placeholder='Input your Password'
             />
-            {errors.password && <p>{errors.password.message}</p>}
+            {errors.password && <p className={errorClassName}>{errors.password.message}</p>}
 
-            <button type='submit'>로그인</button>
+            <button type='submit' className='font-bold'>
+              LOG IN
+            </button>
           </div>
         </form>
-        <div className='w-[600px] bg-blue-600 relative right-5 text-center text-white flex justify-center items-center flex-col'>
+        <div className='relative right-5 flex w-[600px] flex-col items-center justify-center bg-blue-600 p-4 text-center text-white shadow-custom'>
           <span>
             <strong>WELCOME!</strong> <br />
             Enter your details and start with us
           </span>
-          <button>SIGNUP</button>
+          <button type='button'>SIGNUP</button>
         </div>
       </div>
     </div>
