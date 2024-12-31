@@ -6,6 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { TfiEmail } from 'react-icons/tfi';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import SuccessModal from '@/components/SuccessModal';
+import { RiLoginBoxLine } from 'react-icons/ri';
 
 interface FormData {
   email: string;
@@ -135,12 +136,13 @@ export default function Login() {
                 Forgot Password?
               </Link>
             </div>
-            <div className='pb-12 text-center'>
+            <div className='flex justify-center pb-12'>
               <button
                 type='submit'
-                className='rounded-lg bg-blue-900 px-10 py-2 font-bold text-white transition-colors duration-300 hover:bg-blue-600'
+                className='flex items-center justify-center gap-2 rounded-lg bg-blue-900 px-10 py-2 font-bold text-white transition-colors duration-300 hover:bg-blue-600'
               >
-                LOG IN
+                <RiLoginBoxLine />
+                <span>LOG IN</span>
               </button>
             </div>
           </form>
