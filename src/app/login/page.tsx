@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { TfiEmail } from 'react-icons/tfi';
 import { RiLockPasswordLine } from 'react-icons/ri';
+import SuccessModal from '@/components/SuccessModal';
 
 interface FormData {
   email: string;
@@ -19,34 +20,46 @@ export default function Login() {
     setValue,
   } = useForm<FormData>();
   const [checked, setChecked] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
 
   const errorClassName = 'text-red-500 text-sm font-semibold';
   const inputClassName = 'shadow-custom2 w-full rounded-lg py-4 pl-16 pr-3 focus:placeholder-transparent';
 
   const handleLogin: SubmitHandler<FormData> = async (data: FormData) => {
-    const response = await fetch('http://localhost:3010/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      console.log('로그인 요청 데이터:', data);
 
-    if (response.ok) {
-      const { message } = await response.json();
-      alert(message);
-    } else {
-      setValue('email', '');
-      setValue('password', '');
+      const response = await fetch('http://localhost:3010/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }), // JSON 문자열로 변환된 데이터를 전송
+      });
+
+      if (response.ok) {
+        const { message } = await response.json();
+        alert(`로그인 성공: ${message}`);
+      } else {
+        const { message } = await response.json();
+        alert(message);
+        setValue('email', ''); // 입력 필드 초기화
+        setValue('password', '');
+      }
+    } catch (error) {
+      console.error('로그인 요청 중 오류 발생:', error);
+      alert('로그인 요청 실패. 서버 상태를 확인해주세요.');
     }
   };
-
   const handleChange = () => setChecked(!checked);
 
   return (
     <div className='flex min-h-screen w-full items-center justify-center'>
       {/* Login Form Section */}
-      <div className='relative left-5 z-10 flex w-full max-w-[600px] rounded-xl bg-white px-20 shadow-custom'>
+      <div className='relative left-0 z-10 mx-4 flex w-full max-w-[600px] rounded-xl bg-white px-20 shadow-custom lg:left-5 lg:mx-0'>
         <div className='w-full'>
           <h2 className='py-12 text-center text-2xl font-semibold underline'>Login please</h2>
 
@@ -139,6 +152,9 @@ export default function Login() {
           </Link>
         </div>
       </div>
+
+      {/* SuccessModal Portal */}
+      <SuccessModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }
