@@ -20,10 +20,12 @@ export default function Login() {
     setValue,
   } = useForm<FormData>();
   const [checked, setChecked] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isShowLoginError, setIsShowLoginError] = useState<string>('');
 
-  const errorClassName = 'text-red-500 text-sm font-semibold';
-  const inputClassName = 'shadow-custom2 w-full rounded-lg py-4 pl-16 pr-3 focus:placeholder-transparent';
+  const errorClassName = 'text-red-500 text-xs font-semibold';
+  const inputClassName =
+    'shadow-custom2 w-full rounded-lg border-0 py-4 pl-16 pr-3 transition duration-300 focus:placeholder-transparent focus:outline-none focus:ring-2 focus:ring-blue-500';
 
   const handleLogin: SubmitHandler<FormData> = async (data: FormData) => {
     try {
@@ -41,11 +43,11 @@ export default function Login() {
       });
 
       if (response.ok) {
-        const { message } = await response.json();
-        alert(`로그인 성공: ${message}`);
+        if (isShowLoginError !== '') setIsShowLoginError('');
+        setIsModalOpen(true);
       } else {
         const { message } = await response.json();
-        alert(message);
+        setIsShowLoginError(message);
         setValue('email', ''); // 입력 필드 초기화
         setValue('password', '');
       }
@@ -63,8 +65,14 @@ export default function Login() {
         <div className='w-full'>
           <h2 className='py-12 text-center text-2xl font-semibold underline'>Login please</h2>
 
-          <form onSubmit={handleSubmit(handleLogin)} className='space-y-6'>
-            <div className='space-y-2'>
+          <form onSubmit={handleSubmit(handleLogin)} className='space-y-3'>
+            <div className='space-y-3'>
+              {isShowLoginError && (
+                <div className='text-center'>
+                  <h3 className='bg-red-500 py-2 text-xs font-semibold text-white'>{isShowLoginError}</h3>
+                </div>
+              )}
+
               <div className='relative'>
                 <div className='absolute left-0 top-1/2 h-full w-1 -translate-y-1/2 rounded-l-full bg-blue-600' />
                 <TfiEmail className='absolute left-6 top-1/2 h-6 w-6 -translate-y-1/2 text-gray-400' />
