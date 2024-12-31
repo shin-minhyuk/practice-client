@@ -10,6 +10,7 @@ export default {
     extend: {
       boxShadow: {
         custom: '0 0 20px rgba(0, 0, 0, 0.3)', // 사용자 정의 그림자
+        custom2: '0 0 20px rgba(0, 0, 0, 0.2)', // 사용자 정의 그림자2
       },
     },
   },
